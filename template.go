@@ -7,9 +7,9 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	"github.com/pseudomuto/protokit"
-	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 )
 
 // Template is a type for encapsulating all the parsed files, messages, fields, enums, services, extensions, etc. into
@@ -64,6 +64,33 @@ func NewTemplate(descs []*protokit.FileDescriptor, pluginOptions *PluginOptions)
 			addFromMessage(m)
 		}
 
+		/// Post processing the messages
+		for _, msg := range file.Messages {
+			for _, f := range msg.Fields {
+				if f.IsMap {
+					index, msg := getMessageByName(&file.Messages, f.Type)
+					if msg == nil || len(msg.Fields) != 2 {
+						panic(fmt.Sprintf("unable to find key/va;ue for %s", f.Name))
+					}
+
+					keyField := msg.Fields[0]
+					valueField := msg.Fields[1]
+					if keyField.Name != "key" {
+						panic(fmt.Sprintf("expected map entry's first field to be 'key', not '%s'", keyField.Name))
+					}
+					if valueField.Name != "value" {
+						panic(fmt.Sprintf("expected map entry's first field to be 'value', not '%s'", valueField.Name))
+					}
+					typeName := fmt.Sprintf("map<%s, %s>", keyField.Type, valueField.Type)
+					f.Type = typeName
+					f.FullType = typeName
+					f.LongType = typeName
+
+					file.Messages = append(file.Messages[:index], file.Messages[index+1:]...)
+				}
+			}
+		}
+
 		for _, s := range f.Services {
 			file.Services = append(file.Services, parseService(s))
 		}
@@ -77,6 +104,16 @@ func NewTemplate(descs []*protokit.FileDescriptor, pluginOptions *PluginOptions)
 	}
 
 	return &Template{Files: files, Scalars: makeScalars()}
+}
+
+func getMessageByName(orderedMessages *orderedMessages, name string) (int, *Message) {
+	for index, msg := range *orderedMessages {
+		if msg.Name == name {
+			return index, msg
+		}
+	}
+
+	return -1, nil
 }
 
 func makeScalars() []*ScalarValue {
