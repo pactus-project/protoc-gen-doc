@@ -11,9 +11,9 @@ import (
 func TestPFilter(t *testing.T) {
 	tests := map[string]string{
 		"Some content.":                          "<p>Some content.</p>",
-		"Some content.\nRight here.":             "<p>Some content.</p><p>Right here.</p>",
-		"Some content.\r\nRight here.":           "<p>Some content.</p><p>Right here.</p>",
-		"Some content.\n\tRight here.":           "<p>Some content.</p><p>Right here.</p>",
+		"Some content.\nRight here.":             "<p>Some content.\nRight here.</p>",
+		"Some content.\r\nRight here.":           "<p>Some content.\nRight here.</p>",
+		"Some content.\n\tRight here.":           "<p>Some content.\n\tRight here.</p>",
 		"Some content.\r\n\n  \r\n  Right here.": "<p>Some content.</p><p>Right here.</p>",
 	}
 
@@ -25,9 +25,9 @@ func TestPFilter(t *testing.T) {
 func TestParaFilter(t *testing.T) {
 	tests := map[string]string{
 		"Some content.":                          "<para>Some content.</para>",
-		"Some content.\nRight here.":             "<para>Some content.</para><para>Right here.</para>",
-		"Some content.\r\nRight here.":           "<para>Some content.</para><para>Right here.</para>",
-		"Some content.\n\tRight here.":           "<para>Some content.</para><para>Right here.</para>",
+		"Some content.\nRight here.":             "<para>Some content.\nRight here.</para>",
+		"Some content.\r\nRight here.":           "<para>Some content.\nRight here.</para>",
+		"Some content.\n\tRight here.":           "<para>Some content.\n\tRight here.</para>",
 		"Some content.\r\n\n  \r\n  Right here.": "<para>Some content.</para><para>Right here.</para>",
 	}
 

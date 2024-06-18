@@ -8,22 +8,24 @@ import (
 )
 
 var (
-	paraPattern         = regexp.MustCompile(`(\n|\r|\r\n)\s*`)
+	paraPattern         = regexp.MustCompile(`(\n\n)\s*`)
 	spacePattern        = regexp.MustCompile("( )+")
-	multiNewlinePattern = regexp.MustCompile(`(\r\n|\r|\n){2,}`)
+	multiNewlinePattern = regexp.MustCompile(`(\n){2,}`)
 	specialCharsPattern = regexp.MustCompile(`[^a-zA-Z0-9_-]`)
 )
 
 // PFilter splits the content by new lines and wraps each one in a <p> tag.
 func PFilter(content string) template.HTML {
-	paragraphs := paraPattern.Split(content, -1)
+	normalized := strings.Replace(content, "\r\n", "\n", -1)
+	paragraphs := paraPattern.Split(normalized, -1)
 
 	return template.HTML(fmt.Sprintf("<p>%s</p>", strings.Join(paragraphs, "</p><p>")))
 }
 
 // ParaFilter splits the content by new lines and wraps each one in a <para> tag.
 func ParaFilter(content string) string {
-	paragraphs := paraPattern.Split(content, -1)
+	normalized := strings.Replace(content, "\r\n", "\n", -1)
+	paragraphs := paraPattern.Split(normalized, -1)
 	return fmt.Sprintf("<para>%s</para>", strings.Join(paragraphs, "</para><para>"))
 }
 
