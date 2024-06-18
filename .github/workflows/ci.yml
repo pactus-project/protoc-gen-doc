@@ -18,10 +18,13 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
+      - name: Dependencies
+        run: go install github.com/haya14busa/goverage
+
       - name: Tests
         run: |
           goverage -race -coverprofile=coverage.txt -covermode=atomic
-          make test/bench test/lint
+          make test/units test/bench test/lint
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v2
