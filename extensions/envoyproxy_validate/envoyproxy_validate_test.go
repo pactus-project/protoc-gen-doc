@@ -4,10 +4,10 @@ import (
 	"testing"
 
 	"github.com/envoyproxy/protoc-gen-validate/validate"
-	"github.com/golang/protobuf/proto"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	. "github.com/pactus-project/protoc-gen-doc/extensions/lyft_validate"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestTransform(t *testing.T) {

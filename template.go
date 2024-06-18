@@ -6,9 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	"github.com/pseudomuto/protokit"
+	descriptor "google.golang.org/protobuf/types/descriptorpb"
 )
 
 // Template is a type for encapsulating all the parsed files, messages, fields, enums, services, extensions, etc. into
@@ -489,8 +489,6 @@ func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.On
 	}
 
 	// Check if this is a map.
-	// See https://github.com/golang/protobuf/blob/master/protoc-gen-go/descriptor/descriptor.pb.go#L1556
-	// for more information
 	if m.Label == "repeated" &&
 		strings.Contains(m.LongType, ".") &&
 		strings.HasSuffix(m.Type, "Entry") &&

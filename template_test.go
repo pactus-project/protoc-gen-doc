@@ -4,13 +4,13 @@ import (
 	"os"
 	"testing"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	. "github.com/pactus-project/protoc-gen-doc"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	"github.com/pseudomuto/protokit"
 	"github.com/pseudomuto/protokit/utils"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
+	descriptor "google.golang.org/protobuf/types/descriptorpb"
 )
 
 var (
