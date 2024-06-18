@@ -18,9 +18,6 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
-      - name: Dependencies
-        run: go get google.golang.org/protobuf/{proto,protoc-gen-go} github.com/haya14busa/goverage
-
       - name: Tests
         run: |
           goverage -race -coverprofile=coverage.txt -covermode=atomic
