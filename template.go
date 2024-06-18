@@ -80,7 +80,8 @@ func NewTemplate(descs []*protokit.FileDescriptor) *Template {
 					if valueField.Name != "value" {
 						panic(fmt.Sprintf("expected map entry's first field to be 'value', not '%s'", valueField.Name))
 					}
-					typeName := fmt.Sprintf("map<%s, %s>", keyField.Type, valueField.Type)
+					typeName := fmt.Sprintf("map&lt;%s, %s&gt;", keyField.Type, valueField.Type)
+					f.Label = ""
 					f.Type = typeName
 					f.FullType = typeName
 					f.LongType = typeName
@@ -424,6 +425,7 @@ type ScalarValue struct {
 	Notes      string `json:"notes"`
 	CppType    string `json:"cppType"`
 	CSharp     string `json:"csType"`
+	RustType   string `json:"rustType"`
 	GoType     string `json:"goType"`
 	JavaType   string `json:"javaType"`
 	PhpType    string `json:"phpType"`
