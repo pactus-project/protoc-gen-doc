@@ -22,7 +22,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240617180043-68d350f18fd4
 )
 
-require github.com/pseudomuto/protoc-gen-doc v1.5.1
+require github.com/pactus-project/protoc-gen-doc v1.5.1
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

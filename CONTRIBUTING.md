@@ -19,7 +19,7 @@ ensures that you'll only be testing the public interface.
 
 Here are some general guidelines for making PRs for this repo.
 
-1. [Fork this repo](https://github.com/pseudomuto/protoc-gen-doc/fork).
+1. [Fork this repo](https://github.com/pactus-project/protoc-gen-doc/fork).
 1. Make a branch off of master (`git checkout -b <your_branch_name>`).
 1. Make focused commits with descriptive messages.
 1. Add tests that fail without your code, and pass with it.
@@ -33,12 +33,12 @@ at least three sections.
 
 ### What is Changing?
 
-Make sure you spell out in as much detail as necessary what will happen to which systems when your PR is merged, 
+Make sure you spell out in as much detail as necessary what will happen to which systems when your PR is merged,
 what are the expected changes.
 
 ### How is it Changing?
 
-Include any relevant implementation details, mimize surprises for the reviewers in this section, if you had to take some 
+Include any relevant implementation details, mimize surprises for the reviewers in this section, if you had to take some
 unorthodox approaches (read hacks), explain why here.
 
 ### What Could Go Wrong?
@@ -59,7 +59,7 @@ How has this change been tested? In your opinion what is the risk, if any, of me
 We follow [Semantic Versioning 2.0.0](http://semver.org/#semantic-versioning-200), and the fact that PRs are tagged with
 the type of release makes determining the next version super simple.
 
-Look through the new (since the last release) PRs that are included in this release to determine the new version. 
+Look through the new (since the last release) PRs that are included in this release to determine the new version.
 
 * If COUNT(labelled `Major release`) > 0, then it's a MAJOR version bump.
 * If COUNT(labelled `Minor release`) > 0, then it's a MINOR version bump.
