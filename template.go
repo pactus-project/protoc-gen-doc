@@ -8,7 +8,7 @@ import (
 
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	"github.com/pseudomuto/protokit"
-	descriptor "google.golang.org/protobuf/types/descriptorpb"
+	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 )
 
 // Template is a type for encapsulating all the parsed files, messages, fields, enums, services, extensions, etc. into
