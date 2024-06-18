@@ -5,26 +5,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	validator "github.com/mwitkow/go-proto-validators"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 )
-
-func init() {
-	// NOTE: mwitkow/go-proto-validators uses gogo/profobuf/proto and therefore
-	// only registers the extension under gogo. We need to register it under
-	// golang/protobuf/proto with the same properties, except using the
-	// golang/protobuf FieldOptions descriptor.
-	proto.RegisterExtension(&proto.ExtensionDesc{
-		ExtendedType:  (*descriptor.FieldOptions)(nil),
-		ExtensionType: validator.E_Field.ExtensionType,
-		Field:         validator.E_Field.Field,
-		Name:          validator.E_Field.Name,
-		Tag:           validator.E_Field.Tag,
-		Filename:      validator.E_Field.Filename,
-	})
-}
 
 // ValidatorRule represents a single validator rule from the (validator.field) method option extension.
 type ValidatorRule struct {

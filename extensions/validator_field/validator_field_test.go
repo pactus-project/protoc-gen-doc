@@ -3,11 +3,11 @@ package extensions_test
 import (
 	"testing"
 
-	"github.com/golang/protobuf/proto"
 	validator "github.com/mwitkow/go-proto-validators"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	. "github.com/pactus-project/protoc-gen-doc/extensions/validator_field"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestTransform(t *testing.T) {
