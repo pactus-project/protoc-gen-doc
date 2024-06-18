@@ -4,7 +4,8 @@
   
   <section>
     <title>Booking.proto</title>
-    <para>Booking related messages.</para><para>This file is really just an example. The data model is completely</para><para>fictional.</para>
+    <para>Booking related messages.</para><para>This file is really just an example. The data model is completely
+fictional.</para>
     
     <section id="com.example.Booking">
       <title>Booking</title>
