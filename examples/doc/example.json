@@ -130,19 +130,7 @@
               "ismap": false,
               "isoneof": false,
               "oneofdecl": "",
-              "defaultValue": "",
-              "options": {
-                "validator.field": [
-                  {
-                    "name": "string_not_empty",
-                    "value": true
-                  },
-                  {
-                    "name": "length_lt",
-                    "value": 255
-                  }
-                ]
-              }
+              "defaultValue": ""
             }
           ]
         },
