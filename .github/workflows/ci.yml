@@ -19,7 +19,7 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: Dependencies
-        run: go install github.com/haya14busa/goverage
+        run: go install github.com/haya14busa/goverage@latest
 
       - name: Tests
         run: |
