@@ -1,6 +1,7 @@
 package gendoc
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"sort"
@@ -70,7 +71,7 @@ func NewTemplate(descs []*protokit.FileDescriptor, pluginOptions *PluginOptions)
 				if f.IsMap {
 					index, msg := getMessageByName(&file.Messages, f.Type)
 					if msg == nil || len(msg.Fields) != 2 {
-						panic(fmt.Sprintf("unable to find key/va;ue for %s", f.Name))
+						panic(fmt.Sprintf("unable to find key/value for %s", f.Name))
 					}
 
 					keyField := msg.Fields[0]
@@ -105,6 +106,32 @@ func NewTemplate(descs []*protokit.FileDescriptor, pluginOptions *PluginOptions)
 	}
 
 	return &Template{Files: files, Scalars: makeScalars()}
+}
+
+// GetMessage returns a message by type name
+func (t *Template) GetMessage(typeName string) *Message {
+	for _, f := range t.Files {
+		for _, msg := range f.Messages {
+			if msg.Name == typeName {
+				return msg
+			}
+		}
+
+	}
+	return nil
+}
+
+// GetEnum returns an enum by type name
+func (t *Template) GetEnum(typeName string) *Enum {
+	for _, f := range t.Files {
+		for _, e := range f.Enums {
+			if e.Name == typeName {
+				return e
+			}
+		}
+
+	}
+	return nil
 }
 
 func getMessageByName(orderedMessages *orderedMessages, name string) (int, *Message) {
@@ -281,14 +308,18 @@ func (m Message) FieldsWithOption(optionName string) []*MessageField {
 // repeated (in which case it'll be "repeated").
 type MessageField struct {
 	Name         string `json:"name"`
+	JsonName     string `json:"jsonName"`
 	Description  string `json:"description"`
 	Label        string `json:"label"`
 	Type         string `json:"type"`
+	JsonType     string `json:"jsonType"`
 	LongType     string `json:"longType"`
 	FullType     string `json:"fullType"`
-	IsMap        bool   `json:"ismap"`
-	IsOneof      bool   `json:"isoneof"`
-	OneofDecl    string `json:"oneofdecl"`
+	IsMap        bool   `json:"isMap"`
+	IsEnum       bool   `json:"isEnum"`
+	IsOneOf      bool   `json:"isOneOf"`
+	IsRepeated   bool   `json:"isRepeated"`
+	OneOfDecl    string `json:"oneOfDecl"`
 	DefaultValue string `json:"defaultValue"`
 
 	Options map[string]interface{} `json:"options,omitempty"`
@@ -369,6 +400,7 @@ func (v EnumValue) Option(name string) interface{} { return v.Options[name] }
 // Service contains details about a service definition within a proto file.
 type Service struct {
 	Name        string           `json:"name"`
+	JsonName    string           `json:"jsonName"`
 	LongName    string           `json:"longName"`
 	FullName    string           `json:"fullName"`
 	Description string           `json:"description"`
@@ -417,6 +449,7 @@ func (s Service) MethodsWithOption(optionName string) []*ServiceMethod {
 // ServiceMethod contains details about an individual method within a service.
 type ServiceMethod struct {
 	Name              string `json:"name"`
+	JsonName          string `json:"jsonName"`
 	Description       string `json:"description"`
 	RequestType       string `json:"requestType"`
 	RequestLongType   string `json:"requestLongType"`
@@ -528,6 +561,7 @@ func parseMessageExtension(pe *protokit.ExtensionDescriptor) *MessageExtension {
 
 func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.OneofDescriptorProto, pluginOptions *PluginOptions) *MessageField {
 	t, lt, ft := parseType(pf)
+	jt := parseJsonType(pf)
 
 	name := pf.GetName()
 	if pluginOptions.CamelCaseFields {
@@ -536,18 +570,28 @@ func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.On
 
 	m := &MessageField{
 		Name:         name,
+		JsonName:     camelToSnake(name),
 		Description:  description(pf.GetComments().String()),
 		Label:        labelName(pf.GetLabel(), pf.IsProto3(), pf.GetProto3Optional()),
 		Type:         t,
+		JsonType:     jt,
 		LongType:     lt,
 		FullType:     ft,
 		DefaultValue: pf.GetDefaultValue(),
 		Options:      mergeOptions(extractOptions(pf.GetOptions()), extensions.Transform(pf.OptionExtensions)),
-		IsOneof:      pf.OneofIndex != nil,
+		IsOneOf:      pf.OneofIndex != nil,
 	}
 
-	if m.IsOneof {
-		m.OneofDecl = oneofDecls[pf.GetOneofIndex()].GetName()
+	if *pf.Type == descriptor.FieldDescriptorProto_TYPE_ENUM {
+		m.IsEnum = true
+	}
+
+	if m.IsOneOf {
+		m.OneOfDecl = oneofDecls[pf.GetOneofIndex()].GetName()
+	}
+
+	if m.Label == "repeated" {
+		m.IsRepeated = true
 	}
 
 	// Check if this is a map.
@@ -565,6 +609,7 @@ func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.On
 func parseService(ps *protokit.ServiceDescriptor) *Service {
 	service := &Service{
 		Name:        ps.GetName(),
+		JsonName:    camelToSnake(ps.GetName()),
 		LongName:    ps.GetLongName(),
 		FullName:    ps.GetFullName(),
 		Description: description(ps.GetComments().String()),
@@ -581,6 +626,7 @@ func parseService(ps *protokit.ServiceDescriptor) *Service {
 func parseServiceMethod(pm *protokit.MethodDescriptor) *ServiceMethod {
 	return &ServiceMethod{
 		Name:              pm.GetName(),
+		JsonName:          camelToSnake(pm.GetName()),
 		Description:       description(pm.GetComments().String()),
 		RequestType:       baseName(pm.GetInputType()),
 		RequestLongType:   strings.TrimPrefix(pm.GetInputType(), "."+pm.GetPackage()+"."),
@@ -623,6 +669,53 @@ func parseType(tc typeContainer) (string, string, string) {
 
 	name = strings.ToLower(strings.TrimPrefix(tc.GetType().String(), "TYPE_"))
 	return name, name, name
+}
+
+func parseJsonType(tc typeContainer) string {
+	switch tc.GetType() {
+	case descriptor.FieldDescriptorProto_TYPE_STRING:
+	case descriptor.FieldDescriptorProto_TYPE_BYTES:
+		return "string"
+
+	case descriptor.FieldDescriptorProto_TYPE_BOOL:
+		return "boolean"
+
+	case descriptor.FieldDescriptorProto_TYPE_GROUP:
+	case descriptor.FieldDescriptorProto_TYPE_MESSAGE:
+	case descriptor.FieldDescriptorProto_TYPE_ENUM:
+		return "object"
+
+	case descriptor.FieldDescriptorProto_TYPE_UINT32:
+	case descriptor.FieldDescriptorProto_TYPE_DOUBLE:
+	case descriptor.FieldDescriptorProto_TYPE_FLOAT:
+	case descriptor.FieldDescriptorProto_TYPE_INT64:
+	case descriptor.FieldDescriptorProto_TYPE_UINT64:
+	case descriptor.FieldDescriptorProto_TYPE_INT32:
+	case descriptor.FieldDescriptorProto_TYPE_FIXED64:
+	case descriptor.FieldDescriptorProto_TYPE_FIXED32:
+	case descriptor.FieldDescriptorProto_TYPE_SFIXED32:
+	case descriptor.FieldDescriptorProto_TYPE_SFIXED64:
+	case descriptor.FieldDescriptorProto_TYPE_SINT32:
+	case descriptor.FieldDescriptorProto_TYPE_SINT64:
+		return "numeric"
+	}
+
+	return "unknown"
+}
+
+func camelToSnake(s string) string {
+	var buf bytes.Buffer
+	for i, r := range s {
+		if unicode.IsUpper(r) {
+			if i > 0 {
+				buf.WriteRune('_')
+			}
+			buf.WriteRune(unicode.ToLower(r))
+		} else {
+			buf.WriteRune(r)
+		}
+	}
+	return buf.String()
 }
 
 func description(comment string) string {
