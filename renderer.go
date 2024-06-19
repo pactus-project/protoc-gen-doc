@@ -116,6 +116,8 @@ type textRenderer struct {
 }
 
 func (mr *textRenderer) Apply(template *Template) ([]byte, error) {
+	funcMap["getMessage"] = template.GetMessage
+	funcMap["getEnum"] = template.GetEnum
 	tmpl, err := text_template.New("Text Template").Funcs(funcMap).Funcs(sprig.TxtFuncMap()).Parse(mr.inputTemplate)
 	if err != nil {
 		return nil, err
