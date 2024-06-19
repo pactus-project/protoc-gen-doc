@@ -291,11 +291,11 @@ func (m Message) FieldsWithOption(optionName string) []*MessageField {
 // repeated (in which case it'll be "repeated").
 type MessageField struct {
 	Name         string `json:"name"`
-	JsonName     string `json:"jsonName"`
+	JSONName     string `json:"jsonName"`
 	Description  string `json:"description"`
 	Label        string `json:"label"`
 	Type         string `json:"type"`
-	JsonType     string `json:"jsonType"`
+	JSONType     string `json:"jsonType"`
 	LongType     string `json:"longType"`
 	FullType     string `json:"fullType"`
 	IsMap        bool   `json:"isMap"`
@@ -383,7 +383,7 @@ func (v EnumValue) Option(name string) interface{} { return v.Options[name] }
 // Service contains details about a service definition within a proto file.
 type Service struct {
 	Name        string           `json:"name"`
-	JsonName    string           `json:"jsonName"`
+	JSONName    string           `json:"jsonName"`
 	LongName    string           `json:"longName"`
 	FullName    string           `json:"fullName"`
 	Description string           `json:"description"`
@@ -432,7 +432,7 @@ func (s Service) MethodsWithOption(optionName string) []*ServiceMethod {
 // ServiceMethod contains details about an individual method within a service.
 type ServiceMethod struct {
 	Name              string `json:"name"`
-	JsonName          string `json:"jsonName"`
+	JSONName          string `json:"jsonName"`
 	Description       string `json:"description"`
 	RequestType       string `json:"requestType"`
 	RequestLongType   string `json:"requestLongType"`
@@ -544,15 +544,15 @@ func parseMessageExtension(pe *protokit.ExtensionDescriptor) *MessageExtension {
 
 func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.OneofDescriptorProto) *MessageField {
 	t, lt, ft := parseType(pf)
-	jt := parseJsonType(pf)
+	jt := parseJSONType(pf)
 
 	m := &MessageField{
 		Name:         pf.GetName(),
-		JsonName:     camelToSnake(pf.GetName()),
+		JSONName:     camelToSnake(pf.GetName()),
 		Description:  description(pf.GetComments().String()),
 		Label:        labelName(pf.GetLabel(), pf.IsProto3(), pf.GetProto3Optional()),
 		Type:         t,
-		JsonType:     jt,
+		JSONType:     jt,
 		LongType:     lt,
 		FullType:     ft,
 		DefaultValue: pf.GetDefaultValue(),
@@ -587,7 +587,7 @@ func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.On
 func parseService(ps *protokit.ServiceDescriptor) *Service {
 	service := &Service{
 		Name:        ps.GetName(),
-		JsonName:    camelToSnake(ps.GetName()),
+		JSONName:    camelToSnake(ps.GetName()),
 		LongName:    ps.GetLongName(),
 		FullName:    ps.GetFullName(),
 		Description: description(ps.GetComments().String()),
@@ -602,9 +602,10 @@ func parseService(ps *protokit.ServiceDescriptor) *Service {
 }
 
 func parseServiceMethod(pm *protokit.MethodDescriptor) *ServiceMethod {
+	jsonName := fmt.Sprintf("%s.%s.%s", camelToSnake(pm.GetPackage()), camelToSnake(*pm.Service.Name), camelToSnake(*pm.Name))
 	return &ServiceMethod{
 		Name:              pm.GetName(),
-		JsonName:          camelToSnake(pm.GetName()),
+		JSONName:          jsonName,
 		Description:       description(pm.GetComments().String()),
 		RequestType:       baseName(pm.GetInputType()),
 		RequestLongType:   strings.TrimPrefix(pm.GetInputType(), "."+pm.GetPackage()+"."),
@@ -649,35 +650,39 @@ func parseType(tc typeContainer) (string, string, string) {
 	return name, name, name
 }
 
-func parseJsonType(tc typeContainer) string {
+func parseJSONType(tc typeContainer) string {
 	switch tc.GetType() {
-	case descriptor.FieldDescriptorProto_TYPE_STRING:
-	case descriptor.FieldDescriptorProto_TYPE_BYTES:
+	case descriptor.FieldDescriptorProto_TYPE_STRING,
+		descriptor.FieldDescriptorProto_TYPE_BYTES:
 		return "string"
 
 	case descriptor.FieldDescriptorProto_TYPE_BOOL:
 		return "boolean"
 
-	case descriptor.FieldDescriptorProto_TYPE_GROUP:
-	case descriptor.FieldDescriptorProto_TYPE_MESSAGE:
-	case descriptor.FieldDescriptorProto_TYPE_ENUM:
+	case descriptor.FieldDescriptorProto_TYPE_GROUP,
+		descriptor.FieldDescriptorProto_TYPE_MESSAGE:
 		return "object"
 
-	case descriptor.FieldDescriptorProto_TYPE_UINT32:
-	case descriptor.FieldDescriptorProto_TYPE_DOUBLE:
-	case descriptor.FieldDescriptorProto_TYPE_FLOAT:
-	case descriptor.FieldDescriptorProto_TYPE_INT64:
-	case descriptor.FieldDescriptorProto_TYPE_UINT64:
-	case descriptor.FieldDescriptorProto_TYPE_INT32:
-	case descriptor.FieldDescriptorProto_TYPE_FIXED64:
-	case descriptor.FieldDescriptorProto_TYPE_FIXED32:
-	case descriptor.FieldDescriptorProto_TYPE_SFIXED32:
-	case descriptor.FieldDescriptorProto_TYPE_SFIXED64:
-	case descriptor.FieldDescriptorProto_TYPE_SINT32:
-	case descriptor.FieldDescriptorProto_TYPE_SINT64:
+	case descriptor.FieldDescriptorProto_TYPE_ENUM:
+		return "string"
+
+	case descriptor.FieldDescriptorProto_TYPE_UINT32,
+		descriptor.FieldDescriptorProto_TYPE_DOUBLE,
+		descriptor.FieldDescriptorProto_TYPE_FLOAT,
+		descriptor.FieldDescriptorProto_TYPE_INT64,
+		descriptor.FieldDescriptorProto_TYPE_UINT64,
+		descriptor.FieldDescriptorProto_TYPE_INT32,
+		descriptor.FieldDescriptorProto_TYPE_FIXED64,
+		descriptor.FieldDescriptorProto_TYPE_FIXED32,
+		descriptor.FieldDescriptorProto_TYPE_SFIXED32,
+		descriptor.FieldDescriptorProto_TYPE_SFIXED64,
+		descriptor.FieldDescriptorProto_TYPE_SINT32,
+		descriptor.FieldDescriptorProto_TYPE_SINT64:
 		return "numeric"
 	}
 
+	fmt.Println(tc.GetType())
+	fmt.Println(tc.GetTypeName())
 	return "unknown"
 }
 
