@@ -664,7 +664,7 @@ func parseJSONType(tc typeContainer) string {
 		return "object"
 
 	case descriptor.FieldDescriptorProto_TYPE_ENUM:
-		return "string"
+		return "numeric"
 
 	case descriptor.FieldDescriptorProto_TYPE_UINT32,
 		descriptor.FieldDescriptorProto_TYPE_DOUBLE,
