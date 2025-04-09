@@ -23,7 +23,7 @@
           "fields": [
             {
               "name": "vehicle_id",
-              "jsonName": "vehicle_id",
+              "SnakeName": "vehicle_id",
               "description": "ID of booked vehicle.",
               "label": "",
               "type": "int32",
@@ -39,7 +39,7 @@
             },
             {
               "name": "customer_id",
-              "jsonName": "customer_id",
+              "SnakeName": "customer_id",
               "description": "Customer that booked the vehicle.",
               "label": "",
               "type": "int32",
@@ -55,7 +55,7 @@
             },
             {
               "name": "status",
-              "jsonName": "status",
+              "SnakeName": "status",
               "description": "Status of the booking.",
               "label": "",
               "type": "BookingStatus",
@@ -71,7 +71,7 @@
             },
             {
               "name": "confirmation_sent",
-              "jsonName": "confirmation_sent",
+              "SnakeName": "confirmation_sent",
               "description": "Has booking confirmation been sent?",
               "label": "",
               "type": "bool",
@@ -87,7 +87,7 @@
             },
             {
               "name": "payment_received",
-              "jsonName": "payment_received",
+              "SnakeName": "payment_received",
               "description": "Has payment been received?",
               "label": "",
               "type": "bool",
@@ -103,7 +103,7 @@
             },
             {
               "name": "color_preference",
-              "jsonName": "color_preference",
+              "SnakeName": "color_preference",
               "description": "Color preference of the customer.",
               "label": "",
               "type": "string",
@@ -134,7 +134,7 @@
           "fields": [
             {
               "name": "id",
-              "jsonName": "id",
+              "SnakeName": "id",
               "description": "Unique booking status ID.",
               "label": "",
               "type": "int32",
@@ -150,7 +150,7 @@
             },
             {
               "name": "description",
-              "jsonName": "description",
+              "SnakeName": "description",
               "description": "Booking status description. E.g. \"Active\".",
               "label": "",
               "type": "string",
@@ -178,7 +178,7 @@
           "fields": [
             {
               "name": "id",
-              "jsonName": "id",
+              "SnakeName": "id",
               "description": "Unique booking status ID.",
               "label": "",
               "type": "int32",
@@ -209,14 +209,14 @@
       "services": [
         {
           "name": "BookingService",
-          "jsonName": "booking_service",
+          "SnakeName": "booking_service",
           "longName": "BookingService",
           "fullName": "com.example.BookingService",
           "description": "Service for handling vehicle bookings.",
           "methods": [
             {
               "name": "BookVehicle",
-              "jsonName": "com.example.booking_service.book_vehicle",
+              "SnakeName": "com.example.booking_service.book_vehicle",
               "description": "Used to book a vehicle. Pass in a Booking and a BookingStatus will be returned.",
               "requestType": "Booking",
               "requestLongType": "Booking",
@@ -240,7 +240,7 @@
             },
             {
               "name": "BookingUpdates",
-              "jsonName": "com.example.booking_service.booking_updates",
+              "SnakeName": "com.example.booking_service.booking_updates",
               "description": "Used to subscribe to updates of the BookingStatus.",
               "requestType": "BookingStatusID",
               "requestLongType": "BookingStatusID",
@@ -278,7 +278,7 @@
           "fields": [
             {
               "name": "address_line_1",
-              "jsonName": "address_line_1",
+              "SnakeName": "address_line_1",
               "description": "First address line.",
               "label": "required",
               "type": "string",
@@ -294,7 +294,7 @@
             },
             {
               "name": "address_line_2",
-              "jsonName": "address_line_2",
+              "SnakeName": "address_line_2",
               "description": "Second address line.",
               "label": "optional",
               "type": "string",
@@ -310,7 +310,7 @@
             },
             {
               "name": "address_line_3",
-              "jsonName": "address_line_3",
+              "SnakeName": "address_line_3",
               "description": "Second address line.",
               "label": "optional",
               "type": "string",
@@ -326,7 +326,7 @@
             },
             {
               "name": "town",
-              "jsonName": "town",
+              "SnakeName": "town",
               "description": "Address town.",
               "label": "required",
               "type": "string",
@@ -342,7 +342,7 @@
             },
             {
               "name": "county",
-              "jsonName": "county",
+              "SnakeName": "county",
               "description": "Address county, if applicable.",
               "label": "optional",
               "type": "string",
@@ -358,7 +358,7 @@
             },
             {
               "name": "country",
-              "jsonName": "country",
+              "SnakeName": "country",
               "description": "Address country.",
               "label": "required",
               "type": "string",
@@ -386,7 +386,7 @@
           "fields": [
             {
               "name": "id",
-              "jsonName": "id",
+              "SnakeName": "id",
               "description": "Unique customer ID.",
               "label": "required",
               "type": "int32",
@@ -402,7 +402,7 @@
             },
             {
               "name": "first_name",
-              "jsonName": "first_name",
+              "SnakeName": "first_name",
               "description": "Customer first name.",
               "label": "required",
               "type": "string",
@@ -418,7 +418,7 @@
             },
             {
               "name": "last_name",
-              "jsonName": "last_name",
+              "SnakeName": "last_name",
               "description": "Customer last name.",
               "label": "required",
               "type": "string",
@@ -434,7 +434,7 @@
             },
             {
               "name": "details",
-              "jsonName": "details",
+              "SnakeName": "details",
               "description": "Customer details.",
               "label": "optional",
               "type": "string",
@@ -450,7 +450,7 @@
             },
             {
               "name": "email_address",
-              "jsonName": "email_address",
+              "SnakeName": "email_address",
               "description": "Customer e-mail address.",
               "label": "optional",
               "type": "string",
@@ -466,7 +466,7 @@
             },
             {
               "name": "phone_number",
-              "jsonName": "phone_number",
+              "SnakeName": "phone_number",
               "description": "Customer phone numbers, primary first.",
               "label": "repeated",
               "type": "string",
@@ -482,7 +482,7 @@
             },
             {
               "name": "mail_addresses",
-              "jsonName": "mail_addresses",
+              "SnakeName": "mail_addresses",
               "description": "Customer mail addresses, primary first.",
               "label": "repeated",
               "type": "Address",
@@ -559,7 +559,7 @@
           "fields": [
             {
               "name": "id",
-              "jsonName": "id",
+              "SnakeName": "id",
               "description": "The unique manufacturer ID.",
               "label": "required",
               "type": "int32",
@@ -575,7 +575,7 @@
             },
             {
               "name": "code",
-              "jsonName": "code",
+              "SnakeName": "code",
               "description": "A manufacturer code, e.g. \"DKL4P\".",
               "label": "required",
               "type": "string",
@@ -591,7 +591,7 @@
             },
             {
               "name": "details",
-              "jsonName": "details",
+              "SnakeName": "details",
               "description": "Manufacturer details (minimum orders et.c.).",
               "label": "optional",
               "type": "string",
@@ -607,7 +607,7 @@
             },
             {
               "name": "category",
-              "jsonName": "category",
+              "SnakeName": "category",
               "description": "Manufacturer category.",
               "label": "optional",
               "type": "Category",
@@ -635,7 +635,7 @@
           "fields": [
             {
               "name": "id",
-              "jsonName": "id",
+              "SnakeName": "id",
               "description": "The unique model ID.",
               "label": "required",
               "type": "string",
@@ -651,7 +651,7 @@
             },
             {
               "name": "model_code",
-              "jsonName": "model_code",
+              "SnakeName": "model_code",
               "description": "The car model code, e.g. \"PZ003\".",
               "label": "required",
               "type": "string",
@@ -667,7 +667,7 @@
             },
             {
               "name": "model_name",
-              "jsonName": "model_name",
+              "SnakeName": "model_name",
               "description": "The car model name, e.g. \"Z3\".",
               "label": "required",
               "type": "string",
@@ -683,7 +683,7 @@
             },
             {
               "name": "daily_hire_rate_dollars",
-              "jsonName": "daily_hire_rate_dollars",
+              "SnakeName": "daily_hire_rate_dollars",
               "description": "Dollars per day.",
               "label": "required",
               "type": "sint32",
@@ -699,7 +699,7 @@
             },
             {
               "name": "daily_hire_rate_cents",
-              "jsonName": "daily_hire_rate_cents",
+              "SnakeName": "daily_hire_rate_cents",
               "description": "Cents per day.",
               "label": "required",
               "type": "sint32",
@@ -746,7 +746,7 @@
           "fields": [
             {
               "name": "id",
-              "jsonName": "id",
+              "SnakeName": "id",
               "description": "Unique vehicle ID.",
               "label": "required",
               "type": "int32",
@@ -762,7 +762,7 @@
             },
             {
               "name": "model",
-              "jsonName": "model",
+              "SnakeName": "model",
               "description": "Vehicle model.",
               "label": "required",
               "type": "Model",
@@ -778,7 +778,7 @@
             },
             {
               "name": "reg_number",
-              "jsonName": "reg_number",
+              "SnakeName": "reg_number",
               "description": "Vehicle registration number.",
               "label": "required",
               "type": "string",
@@ -794,7 +794,7 @@
             },
             {
               "name": "mileage",
-              "jsonName": "mileage",
+              "SnakeName": "mileage",
               "description": "Current vehicle mileage, if known.",
               "label": "optional",
               "type": "sint32",
@@ -810,7 +810,7 @@
             },
             {
               "name": "category",
-              "jsonName": "category",
+              "SnakeName": "category",
               "description": "Vehicle category.",
               "label": "optional",
               "type": "Category",
@@ -826,7 +826,7 @@
             },
             {
               "name": "daily_hire_rate_dollars",
-              "jsonName": "daily_hire_rate_dollars",
+              "SnakeName": "daily_hire_rate_dollars",
               "description": "Dollars per day.\n\nCheck also cents field.",
               "label": "optional",
               "type": "sint32",
@@ -842,7 +842,7 @@
             },
             {
               "name": "daily_hire_rate_cents",
-              "jsonName": "daily_hire_rate_cents",
+              "SnakeName": "daily_hire_rate_cents",
               "description": "Cents per day.\n\nCheck also dollars field.",
               "label": "optional",
               "type": "sint32",
@@ -870,7 +870,7 @@
           "fields": [
             {
               "name": "code",
-              "jsonName": "code",
+              "SnakeName": "code",
               "description": "Category code. E.g. \"S\".",
               "label": "required",
               "type": "string",
@@ -886,7 +886,7 @@
             },
             {
               "name": "description",
-              "jsonName": "description",
+              "SnakeName": "description",
               "description": "Category name. E.g. \"Sedan\".",
               "label": "required",
               "type": "string",

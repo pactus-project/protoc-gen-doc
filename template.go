@@ -8,9 +8,9 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	"github.com/pseudomuto/protokit"
+	descriptor "google.golang.org/protobuf/types/descriptorpb"
 )
 
 // Template is a type for encapsulating all the parsed files, messages, fields, enums, services, extensions, etc. into
@@ -308,7 +308,7 @@ func (m Message) FieldsWithOption(optionName string) []*MessageField {
 // repeated (in which case it'll be "repeated").
 type MessageField struct {
 	Name         string `json:"name"`
-	JSONName     string `json:"jsonName"`
+	SnakeName    string `json:"SnakeName"`
 	Description  string `json:"description"`
 	Label        string `json:"label"`
 	Type         string `json:"type"`
@@ -400,7 +400,7 @@ func (v EnumValue) Option(name string) interface{} { return v.Options[name] }
 // Service contains details about a service definition within a proto file.
 type Service struct {
 	Name        string           `json:"name"`
-	JSONName    string           `json:"jsonName"`
+	SnakeName   string           `json:"SnakeName"`
 	LongName    string           `json:"longName"`
 	FullName    string           `json:"fullName"`
 	Description string           `json:"description"`
@@ -449,7 +449,7 @@ func (s Service) MethodsWithOption(optionName string) []*ServiceMethod {
 // ServiceMethod contains details about an individual method within a service.
 type ServiceMethod struct {
 	Name              string `json:"name"`
-	JSONName          string `json:"jsonName"`
+	SnakeName         string `json:"SnakeName"`
 	Description       string `json:"description"`
 	RequestType       string `json:"requestType"`
 	RequestLongType   string `json:"requestLongType"`
@@ -570,7 +570,7 @@ func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.On
 
 	m := &MessageField{
 		Name:         name,
-		JSONName:     camelToSnake(name),
+		SnakeName:    camelToSnake(name),
 		Description:  description(pf.GetComments().String()),
 		Label:        labelName(pf.GetLabel(), pf.IsProto3(), pf.GetProto3Optional()),
 		Type:         t,
@@ -609,7 +609,7 @@ func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.On
 func parseService(ps *protokit.ServiceDescriptor) *Service {
 	service := &Service{
 		Name:        ps.GetName(),
-		JSONName:    camelToSnake(ps.GetName()),
+		SnakeName:   camelToSnake(ps.GetName()),
 		LongName:    ps.GetLongName(),
 		FullName:    ps.GetFullName(),
 		Description: description(ps.GetComments().String()),
@@ -624,10 +624,10 @@ func parseService(ps *protokit.ServiceDescriptor) *Service {
 }
 
 func parseServiceMethod(pm *protokit.MethodDescriptor) *ServiceMethod {
-	jsonName := fmt.Sprintf("%s.%s.%s", camelToSnake(pm.GetPackage()), camelToSnake(*pm.Service.Name), camelToSnake(*pm.Name))
+	SnakeName := fmt.Sprintf("%s.%s.%s", camelToSnake(pm.GetPackage()), camelToSnake(*pm.Service.Name), camelToSnake(*pm.Name))
 	return &ServiceMethod{
 		Name:              pm.GetName(),
-		JSONName:          jsonName,
+		SnakeName:         SnakeName,
 		Description:       description(pm.GetComments().String()),
 		RequestType:       baseName(pm.GetInputType()),
 		RequestLongType:   strings.TrimPrefix(pm.GetInputType(), "."+pm.GetPackage()+"."),

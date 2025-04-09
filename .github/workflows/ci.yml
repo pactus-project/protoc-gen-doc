@@ -8,15 +8,12 @@ on:
 
 jobs:
   test:
-    strategy:
-      matrix:
-        go: [ '1.21' ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: ${{ matrix.go }}
+          go-version: 'stable'
 
       - name: Dependencies
         run: go install github.com/haya14busa/goverage@latest

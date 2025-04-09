@@ -4,13 +4,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	. "github.com/pactus-project/protoc-gen-doc"
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	"github.com/pseudomuto/protokit"
 	"github.com/pseudomuto/protokit/utils"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/reflect/protoregistry"
+	"google.golang.org/protobuf/runtime/protoimpl"
+	descriptor "google.golang.org/protobuf/types/descriptorpb"
 )
 
 var (
@@ -44,7 +45,7 @@ func TestMain(m *testing.M) {
 
 func identity(payload interface{}) interface{} { return payload }
 
-var E_ExtendFile = &proto.ExtensionDesc{
+var E_ExtendFile = &protoimpl.ExtensionInfo{
 	ExtendedType:  (*descriptor.FileOptions)(nil),
 	ExtensionType: (*bool)(nil),
 	Field:         20000,
@@ -53,7 +54,7 @@ var E_ExtendFile = &proto.ExtensionDesc{
 	Filename:      "extend.proto",
 }
 
-var E_ExtendService = &proto.ExtensionDesc{
+var E_ExtendService = &protoimpl.ExtensionInfo{
 	ExtendedType:  (*descriptor.ServiceOptions)(nil),
 	ExtensionType: (*bool)(nil),
 	Field:         20000,
@@ -62,7 +63,7 @@ var E_ExtendService = &proto.ExtensionDesc{
 	Filename:      "extend.proto",
 }
 
-var E_ExtendMethod = &proto.ExtensionDesc{
+var E_ExtendMethod = &protoimpl.ExtensionInfo{
 	ExtendedType:  (*descriptor.MethodOptions)(nil),
 	ExtensionType: (*bool)(nil),
 	Field:         20000,
@@ -71,7 +72,7 @@ var E_ExtendMethod = &proto.ExtensionDesc{
 	Filename:      "extend.proto",
 }
 
-var E_ExtendEnum = &proto.ExtensionDesc{
+var E_ExtendEnum = &protoimpl.ExtensionInfo{
 	ExtendedType:  (*descriptor.EnumOptions)(nil),
 	ExtensionType: (*bool)(nil),
 	Field:         20000,
@@ -80,7 +81,7 @@ var E_ExtendEnum = &proto.ExtensionDesc{
 	Filename:      "extend.proto",
 }
 
-var E_ExtendEnumValue = &proto.ExtensionDesc{
+var E_ExtendEnumValue = &protoimpl.ExtensionInfo{
 	ExtendedType:  (*descriptor.EnumValueOptions)(nil),
 	ExtensionType: (*bool)(nil),
 	Field:         20000,
@@ -89,7 +90,7 @@ var E_ExtendEnumValue = &proto.ExtensionDesc{
 	Filename:      "extend.proto",
 }
 
-var E_ExtendMessage = &proto.ExtensionDesc{
+var E_ExtendMessage = &protoimpl.ExtensionInfo{
 	ExtendedType:  (*descriptor.MessageOptions)(nil),
 	ExtensionType: (*bool)(nil),
 	Field:         20000,
@@ -98,7 +99,7 @@ var E_ExtendMessage = &proto.ExtensionDesc{
 	Filename:      "extend.proto",
 }
 
-var E_ExtendField = &proto.ExtensionDesc{
+var E_ExtendField = &protoimpl.ExtensionInfo{
 	ExtendedType:  (*descriptor.FieldOptions)(nil),
 	ExtensionType: (*bool)(nil),
 	Field:         20000,
@@ -108,19 +109,19 @@ var E_ExtendField = &proto.ExtensionDesc{
 }
 
 func registerTestExtensions() {
-	proto.RegisterExtension(E_ExtendFile)
+	protoregistry.GlobalTypes.RegisterExtension(E_ExtendFile)
 	extensions.SetTransformer(E_ExtendFile.Name, identity)
-	proto.RegisterExtension(E_ExtendService)
+	protoregistry.GlobalTypes.RegisterExtension(E_ExtendService)
 	extensions.SetTransformer(E_ExtendService.Name, identity)
-	proto.RegisterExtension(E_ExtendMethod)
+	protoregistry.GlobalTypes.RegisterExtension(E_ExtendMethod)
 	extensions.SetTransformer(E_ExtendMethod.Name, identity)
-	proto.RegisterExtension(E_ExtendEnum)
+	protoregistry.GlobalTypes.RegisterExtension(E_ExtendEnum)
 	extensions.SetTransformer(E_ExtendEnum.Name, identity)
-	proto.RegisterExtension(E_ExtendEnumValue)
+	protoregistry.GlobalTypes.RegisterExtension(E_ExtendEnumValue)
 	extensions.SetTransformer(E_ExtendEnumValue.Name, identity)
-	proto.RegisterExtension(E_ExtendMessage)
+	protoregistry.GlobalTypes.RegisterExtension(E_ExtendMessage)
 	extensions.SetTransformer(E_ExtendMessage.Name, identity)
-	proto.RegisterExtension(E_ExtendField)
+	protoregistry.GlobalTypes.RegisterExtension(E_ExtendField)
 	extensions.SetTransformer(E_ExtendField.Name, identity)
 }
 

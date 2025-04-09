@@ -7,7 +7,7 @@ import (
 	"github.com/pactus-project/protoc-gen-doc/extensions"
 	. "github.com/pactus-project/protoc-gen-doc/extensions/validator_field"
 	"github.com/stretchr/testify/require"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestTransform(t *testing.T) {
