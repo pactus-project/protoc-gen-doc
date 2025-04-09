@@ -1,6 +1,5 @@
 # protoc-gen-doc
 
-[![CI Status][ci-svg]][ci-url]
 [![codecov][codecov-svg]][codecov-url]
 [![GoDoc][godoc-svg]][godoc-url]
 [![Go Report Card][goreport-svg]][goreport-url]
@@ -9,6 +8,17 @@ This is a documentation generator plugin for the Google Protocol Buffers compile
 HTML, JSON, DocBook, and Markdown documentation from comments in your `.proto` files.
 
 It supports proto2 and proto3, and can handle having both in the same context (see [examples](examples/) for proof).
+
+## Note
+
+THIS PROGRAM HAS BEEN MODIFIED FOR USE IN THE PACTUS PROJECT.
+USE WITH CAUTION.
+
+Test this library manually:
+
+```bash
+make build/examples
+```
 
 ## Installation
 

@@ -225,18 +225,7 @@
               "responseType": "BookingStatus",
               "responseLongType": "BookingStatus",
               "responseFullType": "com.example.BookingStatus",
-              "responseStreaming": false,
-              "options": {
-                "google.api.http": {
-                  "rules": [
-                    {
-                      "method": "POST",
-                      "pattern": "/api/bookings/vehicle/{vehicle_id}",
-                      "body": "*"
-                    }
-                  ]
-                }
-              }
+              "responseStreaming": false
             },
             {
               "name": "BookingUpdates",
@@ -611,7 +600,7 @@
               "description": "Manufacturer category.",
               "label": "optional",
               "type": "Category",
-              "jsonType": "string",
+              "jsonType": "numeric",
               "longType": "Manufacturer.Category",
               "fullType": "com.example.Manufacturer.Category",
               "isMap": false,

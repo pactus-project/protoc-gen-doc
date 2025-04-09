@@ -27,9 +27,11 @@ func NewTemplate(descs []*protokit.FileDescriptor, pluginOptions *PluginOptions)
 	files := make([]*File, 0, len(descs))
 
 	for _, f := range descs {
+		desc := f.GetSyntaxComments().String()
+		desc = removeBufLintIgnoreLines(desc)
 		file := &File{
 			Name:          f.GetName(),
-			Description:   description(f.GetSyntaxComments().String()),
+			Description:   description(desc),
 			Package:       f.GetPackage(),
 			HasEnums:      len(f.Enums) > 0,
 			HasExtensions: len(f.Extensions) > 0,
@@ -723,13 +725,27 @@ func camelToSnake(s string) string {
 	return buf.String()
 }
 
+func removeBufLintIgnoreLines(text string) string {
+	var result []string
+
+	// Split the text into lines and process each one
+	for _, line := range strings.Split(text, "\n") {
+		if !strings.HasPrefix(line, "buf:lint") {
+			result = append(result, line)
+		}
+	}
+
+	// Join the result back into a single string
+	return strings.Join(result, "\n")
+}
+
 func description(comment string) string {
 	val := strings.TrimLeft(comment, "*/\n ")
 	if strings.HasPrefix(val, "@exclude") {
 		return ""
 	}
 
-	return val
+	return removeBufLintIgnoreLines(val)
 }
 
 type orderedEnums []*Enum
