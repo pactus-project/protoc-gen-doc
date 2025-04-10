@@ -564,7 +564,7 @@ func parseMessageExtension(pe *protokit.ExtensionDescriptor) *MessageExtension {
 
 func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.OneofDescriptorProto, pluginOptions *PluginOptions) *MessageField {
 	t, lt, ft := parseType(pf)
-	jt := parseJSONType(pf)
+	jt := parseJSONType(pf, lt)
 
 	name := pf.GetName()
 	if pluginOptions.CamelCaseFields {
@@ -675,7 +675,7 @@ func parseType(tc typeContainer) (string, string, string) {
 	return name, name, name
 }
 
-func parseJSONType(tc typeContainer) string {
+func parseJSONType(tc typeContainer, longType string) string {
 	switch tc.GetType() {
 	case descriptor.FieldDescriptorProto_TYPE_STRING,
 		descriptor.FieldDescriptorProto_TYPE_BYTES:
@@ -686,7 +686,7 @@ func parseJSONType(tc typeContainer) string {
 
 	case descriptor.FieldDescriptorProto_TYPE_GROUP,
 		descriptor.FieldDescriptorProto_TYPE_MESSAGE:
-		return "object"
+		return fmt.Sprintf("object (%s)", longType)
 
 	case descriptor.FieldDescriptorProto_TYPE_ENUM:
 		return "numeric"
