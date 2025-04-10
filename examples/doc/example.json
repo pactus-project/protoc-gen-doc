@@ -119,6 +119,22 @@
               "options": {
                 "deprecated": true
               }
+            },
+            {
+              "name": "history",
+              "SnakeName": "history",
+              "description": "History of the Booking",
+              "label": "",
+              "type": "map\u0026lt;int32, string\u0026gt;",
+              "jsonType": "map\u0026lt;int32, string\u0026gt;",
+              "longType": "map\u0026lt;int32, string\u0026gt;",
+              "fullType": "map\u0026lt;int32, string\u0026gt;",
+              "isMap": true,
+              "isEnum": false,
+              "isOneOf": false,
+              "isRepeated": true,
+              "oneOfDecl": "",
+              "defaultValue": ""
             }
           ]
         },

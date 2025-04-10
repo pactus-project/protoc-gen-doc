@@ -89,6 +89,7 @@ func NewTemplate(descs []*protokit.FileDescriptor, pluginOptions *PluginOptions)
 					f.Type = typeName
 					f.FullType = typeName
 					f.LongType = typeName
+					f.JSONType = typeName
 
 					file.Messages = append(file.Messages[:index], file.Messages[index+1:]...)
 				}
@@ -705,8 +706,6 @@ func parseJSONType(tc typeContainer) string {
 		return "numeric"
 	}
 
-	fmt.Println(tc.GetType())
-	fmt.Println(tc.GetTypeName())
 	return "unknown"
 }
 

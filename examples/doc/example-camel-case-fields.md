@@ -55,6 +55,7 @@ Vehicles are some cool shit. But drive carefully!
 | confirmationSent | [bool](#bool) |  | Has booking confirmation been sent? |
 | paymentReceived | [bool](#bool) |  | Has payment been received? |
 | colorPreference | [string](#string) |  | **Deprecated.** Color preference of the customer. |
+| history | [map&amp;lt;int32, string&amp;gt;](#map-lt-int32--string-gt-) |  | History of the Booking |
 
 
 

@@ -28,6 +28,8 @@ Vehicles are some cool shit. But drive carefully!
 
 |color_preference | <<string,string>> | |Color preference of the customer.
 
+|history | <<map&lt;int32, string&gt;,map&lt;int32, string&gt;>> | |History of the Booking
+
 |===========================================
 
 

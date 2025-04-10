@@ -70,6 +70,13 @@ fictional.</para>
               <entry><emphasis>Deprecated.</emphasis><para>Color preference of the customer.</para></entry>
             </row>
             
+            <row>
+              <entry>history</entry>
+              <entry><link linkend="map&lt;int32, string&gt;">map&lt;int32, string&gt;</link></entry>
+              <entry></entry>
+              <entry><para>History of the Booking</para></entry>
+            </row>
+            
           </tbody>
         </tgroup>
       </table>

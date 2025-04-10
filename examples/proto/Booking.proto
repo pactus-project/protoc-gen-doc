@@ -41,6 +41,9 @@ message Booking {
   bool payment_received = 5;
 
   string color_preference = 6 [deprecated=true]; // Color preference of the customer.
+  
+  // History of the Booking
+  map<int32, string> history = 7;
 }
 
 // An empty message for testing
