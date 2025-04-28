@@ -90,6 +90,7 @@ func NewTemplate(descs []*protokit.FileDescriptor, pluginOptions *PluginOptions)
 					f.FullType = typeName
 					f.LongType = typeName
 					f.JSONType = typeName
+					f.OpenRPCType = typeName
 
 					file.Messages = append(file.Messages[:index], file.Messages[index+1:]...)
 				}
@@ -315,6 +316,7 @@ type MessageField struct {
 	Description  string `json:"description"`
 	Label        string `json:"label"`
 	Type         string `json:"type"`
+	OpenRPCType  string `json:"openrpcType"`
 	JSONType     string `json:"jsonType"`
 	LongType     string `json:"longType"`
 	FullType     string `json:"fullType"`
@@ -565,6 +567,7 @@ func parseMessageExtension(pe *protokit.ExtensionDescriptor) *MessageExtension {
 func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.OneofDescriptorProto, pluginOptions *PluginOptions) *MessageField {
 	t, lt, ft := parseType(pf)
 	jt := parseJSONType(pf, lt)
+	ot := parseOpenRPCType(pf)
 
 	name := pf.GetName()
 	if pluginOptions.CamelCaseFields {
@@ -577,6 +580,7 @@ func parseMessageField(pf *protokit.FieldDescriptor, oneofDecls []*descriptor.On
 		Description:  description(pf.GetComments().String()),
 		Label:        labelName(pf.GetLabel(), pf.IsProto3(), pf.GetProto3Optional()),
 		Type:         t,
+		OpenRPCType:  ot,
 		JSONType:     jt,
 		LongType:     lt,
 		FullType:     ft,
@@ -673,6 +677,41 @@ func parseType(tc typeContainer) (string, string, string) {
 
 	name = strings.ToLower(strings.TrimPrefix(tc.GetType().String(), "TYPE_"))
 	return name, name, name
+}
+func parseOpenRPCType(tc typeContainer) string {
+	switch tc.GetType() {
+	case descriptor.FieldDescriptorProto_TYPE_STRING,
+		descriptor.FieldDescriptorProto_TYPE_BYTES:
+		return "string"
+
+	case descriptor.FieldDescriptorProto_TYPE_BOOL:
+		return "boolean"
+
+	case descriptor.FieldDescriptorProto_TYPE_GROUP,
+		descriptor.FieldDescriptorProto_TYPE_MESSAGE:
+		return "object"
+
+	case descriptor.FieldDescriptorProto_TYPE_ENUM:
+		return "integer"
+
+	case descriptor.FieldDescriptorProto_TYPE_INT32,
+		descriptor.FieldDescriptorProto_TYPE_UINT32,
+		descriptor.FieldDescriptorProto_TYPE_INT64,
+		descriptor.FieldDescriptorProto_TYPE_UINT64,
+		descriptor.FieldDescriptorProto_TYPE_FIXED32,
+		descriptor.FieldDescriptorProto_TYPE_FIXED64,
+		descriptor.FieldDescriptorProto_TYPE_SFIXED32,
+		descriptor.FieldDescriptorProto_TYPE_SFIXED64,
+		descriptor.FieldDescriptorProto_TYPE_SINT32,
+		descriptor.FieldDescriptorProto_TYPE_SINT64:
+		return "integer"
+
+	case descriptor.FieldDescriptorProto_TYPE_FLOAT,
+		descriptor.FieldDescriptorProto_TYPE_DOUBLE:
+		return "number"
+	}
+
+	return "unknown"
 }
 
 func parseJSONType(tc typeContainer, longType string) string {
