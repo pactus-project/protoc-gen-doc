@@ -62,8 +62,18 @@ Represents the booking status ID.
 
 
 
-=== EmptyBookingMessage
-An empty message for testing
+=== NopeRequest
+An empty request message for Nope RPC.
+
+Intentionally left blank.
+
+
+
+
+=== NopeResponse
+An empty response message for Nope RPC.
+
+Intentionally left blank.
 
 
 

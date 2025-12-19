@@ -7,7 +7,8 @@
     - [Booking](#com-example-Booking)
     - [BookingStatus](#com-example-BookingStatus)
     - [BookingStatusID](#com-example-BookingStatusID)
-    - [EmptyBookingMessage](#com-example-EmptyBookingMessage)
+    - [NopeRequest](#com-example-NopeRequest)
+    - [NopeResponse](#com-example-NopeResponse)
   
     - [BookingService](#com-example-BookingService)
   
@@ -93,10 +94,24 @@ Represents the booking status ID.
 
 
 
-<a name="com-example-EmptyBookingMessage"></a>
+<a name="com-example-NopeRequest"></a>
 
-### EmptyBookingMessage
-An empty message for testing
+### NopeRequest
+An empty request message for Nope RPC.
+
+Intentionally left blank.
+
+
+
+
+
+
+<a name="com-example-NopeResponse"></a>
+
+### NopeResponse
+An empty response message for Nope RPC.
+
+Intentionally left blank.
 
 
 
@@ -118,6 +133,7 @@ Service for handling vehicle bookings.
 | ----------- | ------------ | ------------- | ------------|
 | BookVehicle | [Booking](#com-example-Booking) | [BookingStatus](#com-example-BookingStatus) | Used to book a vehicle. Pass in a Booking and a BookingStatus will be returned. |
 | BookingUpdates | [BookingStatusID](#com-example-BookingStatusID) | [BookingStatus](#com-example-BookingStatus) stream | Used to subscribe to updates of the BookingStatus. |
+| Nope | [NopeRequest](#com-example-NopeRequest) | [NopeResponse](#com-example-NopeResponse) | Nope has no fields. |
 
  
 

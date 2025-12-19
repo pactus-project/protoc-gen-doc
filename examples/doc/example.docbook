@@ -161,9 +161,16 @@ fictional.</para>
       
     </section>
     
-    <section id="com.example.EmptyBookingMessage">
-      <title>EmptyBookingMessage</title>
-      <para>An empty message for testing</para>
+    <section id="com.example.NopeRequest">
+      <title>NopeRequest</title>
+      <para>An empty request message for Nope RPC.</para><para>Intentionally left blank.</para>
+      
+      
+    </section>
+    
+    <section id="com.example.NopeResponse">
+      <title>NopeResponse</title>
+      <para>An empty response message for Nope RPC.</para><para>Intentionally left blank.</para>
       
       
     </section>
@@ -205,6 +212,13 @@ fictional.</para>
               <entry><link linkend="com.example.BookingStatusID">BookingStatusID</link></entry>
               <entry><link linkend="com.example.BookingStatus">BookingStatus</link> stream</entry>
               <entry><para>Used to subscribe to updates of the BookingStatus.</para></entry>
+            </row>
+            
+            <row>
+              <entry>Nope</entry>
+              <entry><link linkend="com.example.NopeRequest">NopeRequest</link></entry>
+              <entry><link linkend="com.example.NopeResponse">NopeResponse</link></entry>
+              <entry><para>Nope has no fields.</para></entry>
             </row>
             
           </tbody>

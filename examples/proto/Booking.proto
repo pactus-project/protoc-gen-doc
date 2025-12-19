@@ -23,6 +23,16 @@ message BookingStatus {
   string description = 2; /// Booking status description. E.g. "Active".
 }
 
+// An empty request message for Nope RPC.
+message NopeRequest {
+  // Intentionally left blank.
+}
+
+// An empty response message for Nope RPC.
+message NopeResponse {
+  // Intentionally left blank.
+}
+
 /**
  * Represents the booking of a vehicle.
  *
@@ -41,13 +51,9 @@ message Booking {
   bool payment_received = 5;
 
   string color_preference = 6 [deprecated=true]; // Color preference of the customer.
-  
+
   // History of the Booking
   map<int32, string> history = 7;
-}
-
-// An empty message for testing
-message EmptyBookingMessage {
 }
 
 /**
@@ -60,4 +66,7 @@ service BookingService {
 
   /// Used to subscribe to updates of the BookingStatus.
   rpc BookingUpdates (BookingStatusID) returns (stream BookingStatus);
+
+  /// Nope has no fields.
+  rpc Nope (NopeRequest) returns (NopeResponse);
 }
