@@ -41,14 +41,17 @@ func (p *Plugin) Generate(r *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGen
 	result := excludeUnwantedProtos(protokit.ParseCodeGenRequest(r), options.ExcludePatterns)
 
 	customTemplate := ""
+	templateFiles := strings.Split(options.TemplateFile, ";")
 
-	if options.TemplateFile != "" {
-		data, err := ioutil.ReadFile(options.TemplateFile)
-		if err != nil {
-			return nil, err
+	for _, name := range templateFiles {
+		if name != "" {
+			data, err := ioutil.ReadFile(name)
+			if err != nil {
+				return nil, err
+			}
+
+			customTemplate += string(data)
 		}
-
-		customTemplate = string(data)
 	}
 
 	resp := new(plugin_go.CodeGeneratorResponse)
