@@ -1150,7 +1150,7 @@
       "notes": "May contain any arbitrary sequence of bytes.",
       "cppType": "string",
       "csType": "ByteString",
-      "rustType": "Vec\u003cu8\u003e",
+      "rustType": "Vec&lt;u8&gt;",
       "goType": "[]byte",
       "javaType": "ByteString",
       "phpType": "string",

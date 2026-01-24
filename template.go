@@ -783,6 +783,9 @@ func description(comment string) string {
 		return ""
 	}
 
+	val = strings.ReplaceAll(val, "<", "&lt;")
+	val = strings.ReplaceAll(val, ">", "&gt;")
+
 	return removeBufLintIgnoreLines(val)
 }
 

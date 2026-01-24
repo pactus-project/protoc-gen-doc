@@ -171,7 +171,7 @@
     "protoType": "bytes",
     "notes": "May contain any arbitrary sequence of bytes.",
     "cppType": "string",
-    "rustType": "Vec<u8>",
+    "rustType": "Vec&lt;u8&gt;",
     "csType": "ByteString",
     "goType": "[]byte",
     "javaType": "ByteString",

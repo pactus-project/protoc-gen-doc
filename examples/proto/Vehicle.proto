@@ -11,7 +11,7 @@ message Manufacturer {
    * Manufacturer category. A manufacturer may be either inhouse or external.
    */
   enum Category {
-    CATEGORY_INHOUSE  = 0;  /** The manufacturer is inhouse. */
+    CATEGORY_INHOUSE  = 0; /** The manufacturer is inhouse. */
     CATEGORY_EXTERNAL = 1; /** The manufacturer is external. */
   }
 

@@ -437,6 +437,18 @@ func TestExcludedComments(t *testing.T) {
 	require.Equal(t, "the id of this message.", findField("id", message).Description)
 }
 
+func TestEscapeChars(t *testing.T) {
+	field := findField("data", findMessage("Data", vehicleFile))
+	require.Equal(t, "data", field.Name)
+	require.Equal(t, "bytes", field.Type)
+	require.Equal(t, "bytes", field.LongType)
+	require.Equal(t, "bytes", field.FullType)
+	require.False(t, field.IsMap)
+	require.False(t, field.IsOneOf)
+
+	require.Equal(t, "data type is vec&lt;u8&gt;", field.Description)
+}
+
 func findService(name string, f *File) *Service {
 	for _, s := range f.Services {
 		if s.Name == name {
